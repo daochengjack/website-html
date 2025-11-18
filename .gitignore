@@ -1,0 +1,22 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnpm-store/
+
+# Turbo
+.turbo/
+
+# Builds
+.next/
+dist/
+build/
+out/
+coverage/
+*.log
+
+# Env files
+.env*
+
+# OS
+.DS_Store
+Thumbs.db
