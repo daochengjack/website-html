@@ -14,6 +14,7 @@
     "baseUrl": ".",
     "paths": {
       "@repo/config": ["packages/config/src/index.ts"],
+      "@repo/db": ["packages/db/src/index.ts"],
       "@repo/types": ["packages/types/src/index.ts"],
       "@repo/ui": ["packages/ui/src/index.ts"]
     }

@@ -8,13 +8,21 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "db:generate": "pnpm --filter @repo/db db:generate",
+    "db:migrate": "pnpm --filter @repo/db db:migrate:dev",
+    "db:migrate:deploy": "pnpm --filter @repo/db db:migrate:deploy",
+    "db:seed": "pnpm --filter @repo/db db:seed",
+    "db:studio": "pnpm --filter @repo/db db:studio",
+    "db:reset": "pnpm --filter @repo/db db:migrate:reset",
+    "db:check": "pnpm --filter @repo/db db:check"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "@types/node": "^20.10.0",
     "eslint": "^8.53.0",
+    "eslint-config-next": "^14.0.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-react-hooks": "^4.6.0",

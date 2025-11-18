@@ -17,12 +17,15 @@ pnpm install
 
 ### Available commands
 
-| Command        | Description                                                    |
-| -------------- | -------------------------------------------------------------- |
-| `pnpm dev`     | Run all applications in development mode via Turborepo         |
-| `pnpm build`   | Build every package and application                            |
-| `pnpm lint`    | Run linting across the workspace                               |
-| `pnpm test`    | Execute placeholder test commands for each package and app     |
+| Command           | Description                                                |
+| ----------------- | ---------------------------------------------------------- |
+| `pnpm dev`        | Run all applications in development mode via Turborepo     |
+| `pnpm build`      | Build every package and application                        |
+| `pnpm lint`       | Run linting across the workspace                           |
+| `pnpm test`       | Execute placeholder test commands for each package and app |
+| `pnpm db:migrate` | Run Prisma migrations against the configured PostgreSQL DB |
+| `pnpm db:seed`    | Seed the database with reference data                      |
+| `pnpm db:check`   | Execute database constraint sanity checks                  |
 
 To run a single project you can `cd` into the package/app folder and run its scripts, e.g. `pnpm --filter @repo/frontend dev`.
 
@@ -35,6 +38,7 @@ To run a single project you can `cd` into the package/app folder and run its scr
 │   └── frontend     # Next.js 14 application using the app router
 ├── packages
 │   ├── config       # Shared runtime configuration helpers
+│   ├── db           # Prisma ORM database layer (PostgreSQL)
 │   ├── types        # Shared TypeScript types
 │   └── ui           # Shared UI primitives built with React
 ├── docs
@@ -47,6 +51,56 @@ To run a single project you can `cd` into the package/app folder and run its scr
 ```
 
 The legacy standalone HTML that previously lived at the repository root now resides in `docs/reference/` for future reference.
+
+## Database setup
+
+The monorepo includes a shared database package (`@repo/db`) using Prisma ORM with PostgreSQL. See the detailed [Data Model Documentation](./docs/data-model.md) for complete schema reference.
+
+### Prerequisites
+
+- PostgreSQL 14+ running locally or remotely
+- Configure `DATABASE_URL` environment variable
+
+### Initial setup
+
+1. Create `.env` file in `packages/db`:
+
+   ```bash
+   cp packages/db/.env.example packages/db/.env
+   ```
+
+2. Update `DATABASE_URL` in `.env`:
+
+   ```
+   DATABASE_URL="postgresql://user:password@localhost:5432/csceramic?schema=public"
+   ```
+
+3. Generate Prisma Client:
+
+   ```bash
+   pnpm db:generate
+   ```
+
+4. Run migrations:
+
+   ```bash
+   pnpm db:migrate
+   ```
+
+5. Seed reference data (optional):
+   ```bash
+   pnpm db:seed
+   ```
+
+### Additional database commands
+
+| Command                  | Description                                     |
+| ------------------------ | ----------------------------------------------- |
+| `pnpm db:studio`         | Open Prisma Studio GUI at http://localhost:5555 |
+| `pnpm db:reset`          | Reset database (WARNING: deletes all data)      |
+| `pnpm db:migrate:deploy` | Apply migrations in production                  |
+
+For detailed package-level documentation, see [packages/db/README.md](./packages/db/README.md).
 
 ## Commit hooks
 
