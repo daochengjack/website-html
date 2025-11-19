@@ -1,0 +1,40 @@
+[
+  {
+    "slug": "ceramic-capacitors",
+    "path": "/ceramic-capacitors",
+    "name": "Ceramic Capacitors",
+    "description": "High-quality ceramic capacitors for various applications",
+    "metaTitle": "Ceramic Capacitors | CSCeramic",
+    "metaDescription": "Browse our range of ceramic capacitors",
+    "position": 0,
+    "isPublished": true,
+    "showInMenu": true,
+    "locale": "en"
+  },
+  {
+    "slug": "mlcc",
+    "path": "/ceramic-capacitors/mlcc",
+    "parentSlug": "ceramic-capacitors",
+    "name": "MLCC (Multilayer Ceramic Capacitors)",
+    "description": "Multilayer ceramic chip capacitors with high reliability",
+    "metaTitle": "MLCC Capacitors | CSCeramic",
+    "metaDescription": "High-quality multilayer ceramic capacitors",
+    "position": 0,
+    "isPublished": true,
+    "showInMenu": true,
+    "locale": "en"
+  },
+  {
+    "slug": "radial-capacitors",
+    "path": "/ceramic-capacitors/radial",
+    "parentSlug": "ceramic-capacitors",
+    "name": "Radial Ceramic Capacitors",
+    "description": "Traditional radial ceramic capacitors for various applications",
+    "metaTitle": "Radial Ceramic Capacitors | CSCeramic",
+    "metaDescription": "Reliable radial ceramic capacitors",
+    "position": 1,
+    "isPublished": true,
+    "showInMenu": true,
+    "locale": "en"
+  }
+]

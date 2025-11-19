@@ -1,0 +1,24 @@
+{
+  "name": "@repo/scripts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "import": "tsx src/importer.ts",
+    "import:from-json": "tsx src/importers/json-importer.ts",
+    "lint": "echo \"No linting configured for scripts package\"",
+    "test": "echo \"No tests for scripts package\""
+  },
+  "dependencies": {
+    "@repo/db": "../packages/db",
+    "@prisma/client": "^5.7.0",
+    "axios": "^1.6.2",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.2.2"
+  }
+}

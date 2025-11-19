@@ -1,0 +1,95 @@
+[
+  {
+    "sku": "MLCC-0805-100NF",
+    "slug": "mlcc-0805-100nf",
+    "categorySlug": "mlcc",
+    "name": "MLCC 0805 100nF",
+    "shortDescription": "High-quality MLCC capacitor in 0805 package",
+    "description": "This multilayer ceramic capacitor offers excellent stability and reliability. With a capacitance of 100nF and voltage rating of 50V, it is ideal for power supply filtering, coupling, and decoupling applications.",
+    "features": "• X7R dielectric\n• Temperature range: -55°C to +125°C\n• RoHS compliant\n• AEC-Q200 qualified",
+    "applications": "Suitable for automotive, industrial, and consumer electronics applications.",
+    "metaTitle": "MLCC 0805 100nF Ceramic Capacitor",
+    "metaDescription": "High-quality MLCC capacitor in 0805 package with 100nF capacitance and 50V rating",
+    "specifications": [
+      {
+        "key": "Capacitance",
+        "value": "100",
+        "unit": "nF"
+      },
+      {
+        "key": "Voltage",
+        "value": "50",
+        "unit": "V"
+      },
+      {
+        "key": "Tolerance",
+        "value": "±10",
+        "unit": "%"
+      },
+      {
+        "key": "Dielectric",
+        "value": "X7R"
+      },
+      {
+        "key": "Package",
+        "value": "0805"
+      },
+      {
+        "key": "Temperature Range",
+        "value": "-55 to +125",
+        "unit": "°C"
+      }
+    ],
+    "tags": [
+      "automotive",
+      "high-reliability",
+      "rohs-compliant"
+    ],
+    "images": [
+      {
+        "url": "https://example.com/images/mlcc-0805.jpg",
+        "altText": "MLCC 0805 Ceramic Capacitor",
+        "isPrimary": true
+      }
+    ],
+    "isPublished": true,
+    "isFeatured": true,
+    "position": 0,
+    "locale": "en"
+  },
+  {
+    "sku": "MLCC-1206-470NF",
+    "slug": "mlcc-1206-470nf",
+    "categorySlug": "mlcc",
+    "name": "MLCC 1206 470nF",
+    "shortDescription": "Large MLCC capacitor in 1206 package",
+    "description": "Premium multilayer ceramic capacitor for high-performance applications requiring larger capacitance values.",
+    "features": "• X7R dielectric\n• High capacitance density\n• Temperature range: -55°C to +125°C\n• RoHS compliant",
+    "applications": "Power supply filtering, DC bus decoupling, high-frequency applications.",
+    "metaTitle": "MLCC 1206 470nF Ceramic Capacitor",
+    "metaDescription": "Premium MLCC capacitor in 1206 package with 470nF capacitance",
+    "specifications": [
+      {
+        "key": "Capacitance",
+        "value": "470",
+        "unit": "nF"
+      },
+      {
+        "key": "Voltage",
+        "value": "50",
+        "unit": "V"
+      },
+      {
+        "key": "Package",
+        "value": "1206"
+      }
+    ],
+    "tags": [
+      "high-capacitance",
+      "power-supply"
+    ],
+    "isPublished": true,
+    "position": 1,
+    "locale": "en"
+  }
+]

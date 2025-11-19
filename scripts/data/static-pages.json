@@ -1,0 +1,22 @@
+[
+  {
+    "slug": "about",
+    "pageKey": "about-us",
+    "title": "About CSCeramic",
+    "content": "<h1>About CSCeramic</h1><p>CSCeramic is a leading manufacturer of high-quality ceramic capacitors with over 20 years of experience in the industry.</p><h2>Our Mission</h2><p>We are committed to providing innovative, reliable, and cost-effective ceramic capacitor solutions to customers worldwide.</p><h2>Our Expertise</h2><ul><li>Design and manufacturing of MLCC capacitors</li><li>Radial and axial ceramic capacitors</li><li>Custom solutions for specialized applications</li><li>Rigorous quality control and testing</li></ul><h2>Global Reach</h2><p>With manufacturing facilities in multiple countries and a global distribution network, we serve customers in automotive, industrial, consumer electronics, and telecommunications sectors.</p>",
+    "metaTitle": "About CSCeramic | High-Quality Ceramic Capacitors",
+    "metaDescription": "Learn about CSCeramic, a leading manufacturer of ceramic capacitors with over 20 years of experience.",
+    "isPublished": true,
+    "locale": "en"
+  },
+  {
+    "slug": "contact",
+    "pageKey": "contact-us",
+    "title": "Contact Us",
+    "content": "<h1>Contact CSCeramic</h1><p>Have questions about our products or services? We'd love to hear from you!</p><h2>Get in Touch</h2><p>Email: info@csceramic.com</p><p>Phone: +86-28-1234-5678</p><p>Address: 123 Technology Road, Chengdu, China</p><h2>Business Hours</h2><p>Monday - Friday: 9:00 AM - 6:00 PM (CST)</p><p>Saturday: 10:00 AM - 4:00 PM (CST)</p><p>Sunday: Closed</p>",
+    "metaTitle": "Contact CSCeramic | Get in Touch",
+    "metaDescription": "Contact CSCeramic for inquiries about our ceramic capacitors and services.",
+    "isPublished": true,
+    "locale": "en"
+  }
+]
