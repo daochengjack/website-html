@@ -4,6 +4,15 @@ import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
+/**
+ * WARNING: This is a simple password hash for development/seeding purposes only.
+ * In production, use a proper password hashing library like bcrypt or argon2:
+ *   - bcrypt: https://www.npmjs.com/package/bcrypt
+ *   - argon2: https://www.npmjs.com/package/argon2
+ *
+ * SHA256 is NOT suitable for password storage as it's not a password hashing algorithm
+ * and lacks the necessary protection against brute-force attacks.
+ */
 function derivePasswordHash(password: string): string {
   return createHash('sha256').update(password).digest('hex');
 }

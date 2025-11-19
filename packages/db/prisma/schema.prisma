@@ -348,6 +348,7 @@ model ProductFaq {
 
   product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
+  @@unique([productId, locale])
   @@index([productId])
   @@index([locale])
   @@map("product_faqs")

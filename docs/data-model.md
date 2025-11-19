@@ -449,49 +449,112 @@ When parent entities are deleted:
 
 ## Migration Management
 
-### Initial Setup
+### Initial Setup (Development)
 
 ```bash
 # Install dependencies
 pnpm install
 
-# Generate Prisma Client
+# Generate Prisma Client (usually done by postinstall)
 pnpm db:generate
 
 # Create and apply initial migration
 pnpm db:migrate
+
+# Seed database with reference data (optional)
+pnpm db:seed
 ```
+
+### Prerequisites
+
+Before running migrations, ensure:
+
+1. **PostgreSQL is running** and accessible
+2. **DATABASE_URL** environment variable is set:
+   ```
+   DATABASE_URL="postgresql://user:password@localhost:5432/csceramic?schema=public"
+   ```
+3. **Database exists** (run `createdb csceramic` if needed)
+4. **User has appropriate permissions** (CREATE, ALTER, DROP for dev; CREATE, ALTER for prod)
 
 ### Seed Database
 
 ```bash
-# Run seed script
+# Run seed script (creates roles, admin user, example data)
 pnpm db:seed
+
+# With custom admin password
+SEED_ADMIN_PASSWORD="your-secure-password" pnpm db:seed
 ```
 
 Seeds the following reference data:
 
-- System roles (admin, editor, viewer)
-- Default admin user
-- Inquiry statuses
-- Example product categories with translations
-- Sample product with specifications and images
-- Product tags
-- Client logos
-- Static pages
+- System roles: `admin`, `editor`, `viewer`
+- Default admin user: `admin@csceramic.com` (password: `admin123` or custom via env)
+- Inquiry statuses: `new`, `in-progress`, `awaiting-response`, `resolved`, `closed`
+- Example product categories (root + MLCC subcategory) with English and Chinese translations
+- Sample MLCC product with:
+  - Product name and descriptions in English and Chinese
+  - Technical specifications (capacitance, voltage, tolerance, etc.)
+  - Product images (placeholder URL)
+  - Product tags (automotive, high-temp, RoHS)
+- Client logos (3 sample logos)
+- Static "About Us" page in both English and Chinese
 
 ### Development Workflow
 
-```bash
-# Create a new migration
-pnpm db:migrate
+#### Making Schema Changes
 
-# Reset database (warning: deletes all data)
+```bash
+# 1. Modify schema.prisma
+nano packages/db/prisma/schema.prisma
+
+# 2. Generate Prisma Client (regenerates types)
+pnpm db:generate
+
+# 3. Create migration with descriptive name
+pnpm db:migrate --name add_new_field_to_products
+
+# 4. Follow prompts to apply migration
+
+# 5. Test migration
+pnpm db:seed
+pnpm db:check  # Run constraint tests
+```
+
+#### Reverting Changes
+
+```bash
+# Reset database (WARNING: deletes all data)
 pnpm db:reset
 
-# Open Prisma Studio for data inspection
+# This will:
+# 1. Drop all tables
+# 2. Re-apply all migrations
+# 3. Run seed script
+```
+
+#### Database Inspection
+
+```bash
+# Open Prisma Studio (web GUI at http://localhost:5555)
 pnpm db:studio
 ```
+
+### Production Deployment
+
+```bash
+# Set DATABASE_URL to production database
+export DATABASE_URL="postgresql://prod-user:prod-pass@prod-host:5432/csceramic"
+
+# Apply pending migrations
+pnpm db:migrate:deploy
+
+# Verify schema is up-to-date
+pnpm db:check
+```
+
+**Note**: Never use `pnpm db:reset` in production - it will delete all data!
 
 ## Localization Implementation
 
@@ -516,11 +579,23 @@ const product = await prisma.product.findUnique({
       where: { locale: 'en', isPublished: true },
     },
     images: { orderBy: { position: 'asc' } },
+    specifications: { orderBy: { position: 'asc' } },
+    tagAssignments: {
+      include: {
+        tag: {
+          include: {
+            translations: {
+              where: { locale: 'en' },
+            },
+          },
+        },
+      },
+    },
   },
 });
 ```
 
-**Get all categories with English names:**
+**Get all categories with English translations:**
 
 ```typescript
 const categories = await prisma.productCategory.findMany({
@@ -529,34 +604,215 @@ const categories = await prisma.productCategory.findMany({
     translations: {
       where: { locale: 'en', isPublished: true },
     },
+    children: {
+      orderBy: { position: 'asc' },
+      include: {
+        translations: {
+          where: { locale: 'en', isPublished: true },
+        },
+      },
+    },
   },
   orderBy: { position: 'asc' },
+});
+```
+
+**Get category hierarchy with path:**
+
+```typescript
+// Get all descendants of a category
+const categoryTree = await prisma.productCategory.findMany({
+  where: {
+    path: { startsWith: '/ceramic-capacitors/' },
+  },
+  orderBy: { path: 'asc' },
+});
+```
+
+**Get featured products with latest translations:**
+
+```typescript
+const featuredProducts = await prisma.product.findMany({
+  where: {
+    isFeatured: true,
+    status: 'PUBLISHED',
+  },
+  include: {
+    translations: {
+      where: { locale: 'en', isPublished: true },
+      take: 1,
+    },
+    category: {
+      include: {
+        translations: {
+          where: { locale: 'en' },
+        },
+      },
+    },
+    images: {
+      where: { isPrimary: true },
+      take: 1,
+    },
+  },
+  orderBy: { position: 'asc' },
+});
+```
+
+**Get inquiries with related data:**
+
+```typescript
+const inquiries = await prisma.inquiry.findMany({
+  where: {
+    status: {
+      slug: 'new',
+    },
+  },
+  include: {
+    status: true,
+    product: {
+      include: {
+        translations: {
+          where: { locale: 'en' },
+        },
+      },
+    },
+    assignee: {
+      select: { id: true, name: true, email: true },
+    },
+    messages: {
+      orderBy: { createdAt: 'desc' },
+      take: 5,
+    },
+  },
+  orderBy: { createdAt: 'desc' },
 });
 ```
 
 **Full-text search (using raw SQL for PostgreSQL):**
 
 ```typescript
-const results = await prisma.$queryRaw`
-  SELECT pt.*, p.*
+const searchResults = await prisma.$queryRaw`
+  SELECT 
+    pt.id,
+    pt."productId",
+    pt.name,
+    pt.slug,
+    p.sku,
+    p.status,
+    ts_rank(to_tsvector('simple', pt.name || ' ' || COALESCE(pt.description, '')), 
+            to_tsquery('simple', 'capacitor')) AS relevance
   FROM product_translations pt
   JOIN products p ON pt."productId" = p.id
-  WHERE pt.locale = 'en'
+  WHERE pt.locale = $1
     AND pt."isPublished" = true
+    AND p.status = 'PUBLISHED'
     AND (
       to_tsvector('simple', pt.name || ' ' || COALESCE(pt.description, ''))
-      @@ to_tsquery('simple', 'capacitor')
+      @@ to_tsquery('simple', $2)
     )
+  ORDER BY relevance DESC
+  LIMIT 10;
 `;
+```
+
+**Create product with translations and specifications:**
+
+```typescript
+const newProduct = await prisma.product.create({
+  data: {
+    sku: 'NEW-SKU-001',
+    categoryId: categoryId,
+    status: 'PUBLISHED',
+    publishedAt: new Date(),
+    translations: {
+      create: [
+        {
+          locale: 'en',
+          slug: 'new-product-en',
+          name: 'New Product',
+          description: 'Product description in English',
+          metaTitle: 'New Product | CSCeramic',
+          metaDescription: 'New product description',
+          isPublished: true,
+        },
+        {
+          locale: 'zh',
+          slug: 'new-product-zh',
+          name: '新产品',
+          description: '中文产品描述',
+          metaTitle: '新产品 | 成都宏明',
+          metaDescription: '新产品描述',
+          isPublished: true,
+        },
+      ],
+    },
+    specifications: {
+      create: [
+        {
+          key: 'Capacitance',
+          value: '100',
+          unit: 'nF',
+          position: 0,
+        },
+        {
+          key: 'Voltage',
+          value: '50',
+          unit: 'V',
+          position: 1,
+        },
+      ],
+    },
+    images: {
+      create: {
+        url: '/images/products/new-product.jpg',
+        altText: 'Product image',
+        isPrimary: true,
+        position: 0,
+      },
+    },
+  },
+});
 ```
 
 ## Security Considerations
 
-1. **Password Hashing**: User passwords are stored as hashes (bcrypt/argon2 recommended)
-2. **Session Management**: Session tokens are unique and have expiration
-3. **Soft Deletes**: Newsletter unsubscribes use `unsubscribedAt` for audit trail
-4. **Input Validation**: All user inputs should be validated before database insertion
-5. **SQL Injection**: Prisma provides automatic parameterization
+1. **Password Hashing**: User passwords MUST be stored using secure hashing algorithms
+   - **REQUIRED for production**: Use bcrypt (https://www.npmjs.com/package/bcrypt) or Argon2 (https://www.npmjs.com/package/argon2)
+   - The seed script uses SHA256 for development only - this is NOT secure for production
+   - SHA256 is not a password hashing algorithm and lacks protection against brute-force attacks
+   - Never store plaintext passwords
+   - Consider salting strategies and cost factors for bcrypt
+
+2. **Session Management**:
+   - Session tokens are unique and have expiration timestamps
+   - Consider implementing token refresh logic
+   - Implement logout functionality to invalidate sessions
+   - Consider storing session invalidation lists for security events
+
+3. **Soft Deletes**:
+   - Newsletter unsubscribes use `unsubscribedAt` for compliance and audit trail
+   - Maintains GDPR/privacy compliance records
+
+4. **Input Validation**:
+   - All user inputs should be validated before database insertion
+   - Use Zod, Joi, or similar validation libraries
+   - Validate email formats, SKU formats, slug patterns
+   - Prevent XSS attacks through content filtering
+
+5. **SQL Injection Protection**:
+   - Prisma provides automatic parameterization for SQL queries
+   - Avoid using raw SQL queries for user input
+   - When using `$queryRaw`, always use parameterized placeholders
+
+6. **Authorization**:
+   - User roles (admin, editor, viewer) should be enforced at API level
+   - Implement role-based access control (RBAC) for API endpoints
+   - Consider field-level permissions for sensitive data
+
+7. **Audit Trail**:
+   - All entities track `createdAt` and `updatedAt` for audit purposes
+   - Consider logging user actions (who modified what, when)
+   - Maintain immutable audit logs for compliance
 
 ## Future Enhancements
 
