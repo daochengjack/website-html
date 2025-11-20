@@ -9,6 +9,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { InquiriesModule } from './modules/inquiries/inquiries.module';
 import { AdminModule } from './modules/admin/admin.module';
+import { CatalogModule } from './modules/catalog/catalog.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { AdminModule } from './modules/admin/admin.module';
     AuthModule,
     InquiriesModule,
     AdminModule,
+    CatalogModule,
   ],
   controllers: [AppController],
   providers: [
