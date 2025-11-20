@@ -14,6 +14,16 @@ out/
 coverage/
 *.log
 
+# Compiled TypeScript (but not config files)
+packages/**/src/**/*.js
+packages/**/src/**/*.js.map
+packages/**/src/**/*.d.ts
+packages/**/src/**/*.d.ts.map
+apps/**/src/**/*.js
+apps/**/src/**/*.js.map
+apps/**/src/**/*.d.ts
+apps/**/src/**/*.d.ts.map
+
 # Env files
 .env*
 

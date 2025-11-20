@@ -4,13 +4,14 @@
     "module": "CommonJS",
     "moduleResolution": "Node",
     "outDir": "dist",
-    "rootDir": "src",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noEmit": false,
-    "types": ["node"],
-    "sourceMap": true
+    "types": ["node", "jest"],
+    "sourceMap": true,
+    "useUnknownInCatchVariables": false,
+    "strictPropertyInitialization": false
   },
   "include": ["src/**/*.ts"],
-  "exclude": ["dist", "node_modules"]
+  "exclude": ["dist", "node_modules", "**/*.spec.ts", "test"]
 }
