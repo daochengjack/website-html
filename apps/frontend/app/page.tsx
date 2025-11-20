@@ -1,7 +1,4 @@
-'use client';
-
 import Link from 'next/link';
-import { Button } from '@repo/ui';
 
 export default function HomePage() {
   return (
@@ -14,16 +11,23 @@ export default function HomePage() {
         justifyContent: 'center',
         gap: '1.5rem',
         fontFamily: 'sans-serif',
-        textAlign: 'center'
+        textAlign: 'center',
       }}
     >
       <h1>Welcome to the monorepo frontend</h1>
       <p>Share UI components and types across the entire workspace.</p>
-      <Button onClick={() => alert('Shared UI from @repo/ui in action!')}>
-        Try shared Button
-      </Button>
-      <Link href="https://docs.nestjs.com" style={{ color: 'inherit' }}>
-        Visit the backend framework docs
+      <Link
+        href="/admin"
+        style={{
+          color: 'white',
+          backgroundColor: '#3b82f6',
+          padding: '0.75rem 1.5rem',
+          borderRadius: '0.375rem',
+          textDecoration: 'none',
+          display: 'inline-block',
+        }}
+      >
+        Go to Admin Panel
       </Link>
     </main>
   );

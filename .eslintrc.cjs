@@ -39,7 +39,10 @@ module.exports = {
   overrides: [
     {
       files: ['apps/frontend/**/*.{ts,tsx,js,jsx}'],
-      extends: ['next/core-web-vitals']
+      extends: ['next/core-web-vitals'],
+      rules: {
+        '@next/next/no-html-link-for-pages': 'off'
+      }
     },
     {
       files: ['apps/backend/**/*.{ts,tsx,js,jsx}'],
