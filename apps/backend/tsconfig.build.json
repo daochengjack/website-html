@@ -3,5 +3,7 @@
   "compilerOptions": {
     "declaration": true,
     "declarationMap": true
-  }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["**/*.spec.ts", "test", "dist", "node_modules"]
 }

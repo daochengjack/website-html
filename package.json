@@ -20,15 +20,16 @@
     "data:import:json": "pnpm --filter @repo/scripts import:from-json"
   },
   "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/nodemailer": "^7.0.4",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
-    "@types/node": "^20.10.0",
     "eslint": "^8.53.0",
     "eslint-config-next": "^14.0.0",
     "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "^2.29.0",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-import-resolver-typescript": "^3.6.1",
     "husky": "^8.0.3",
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
@@ -41,5 +42,12 @@
       "prettier --write"
     ],
     "*.{json,md,css,scss,html}": "prettier --write"
+  },
+  "dependencies": {
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/throttler": "^6.4.0",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.2",
+    "nodemailer": "^7.0.10"
   }
 }

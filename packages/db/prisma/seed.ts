@@ -86,10 +86,12 @@ async function main() {
   console.log('🏷️ Seeding inquiry statuses...');
   const statuses = [
     { slug: 'new', name: 'New', color: '#3B82F6', position: 0 },
-    { slug: 'in-progress', name: 'In Progress', color: '#F59E0B', position: 1 },
-    { slug: 'awaiting-response', name: 'Awaiting Response', color: '#8B5CF6', position: 2 },
-    { slug: 'resolved', name: 'Resolved', color: '#10B981', position: 3 },
-    { slug: 'closed', name: 'Closed', color: '#6B7280', position: 4 },
+    { slug: 'acknowledged', name: 'Acknowledged', color: '#06B6D4', position: 1 },
+    { slug: 'in-progress', name: 'In Progress', color: '#F59E0B', position: 2 },
+    { slug: 'awaiting-response', name: 'Awaiting Response', color: '#8B5CF6', position: 3 },
+    { slug: 'resolved', name: 'Resolved', color: '#10B981', position: 4 },
+    { slug: 'spam', name: 'Spam', color: '#EF4444', position: 5 },
+    { slug: 'closed', name: 'Closed', color: '#6B7280', position: 6 },
   ];
 
   for (const status of statuses) {
