@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
 import { JwtAuthGuard } from './modules/auth/guards/jwt-auth.guard';
 import { InquiriesModule } from './modules/inquiries/inquiries.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { InquiriesModule } from './modules/inquiries/inquiries.module';
     ]),
     AuthModule,
     InquiriesModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [

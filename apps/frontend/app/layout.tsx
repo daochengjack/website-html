@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 
 import { AuthProvider } from '../contexts/auth/AuthContext';
+import { ToastProvider } from '../contexts/toast/ToastContext';
+import { Toast } from '../components/Toast';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -13,7 +15,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        <ToastProvider>
+          <AuthProvider>{children}</AuthProvider>
+          <Toast />
+        </ToastProvider>
       </body>
     </html>
   );

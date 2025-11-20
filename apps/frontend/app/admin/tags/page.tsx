@@ -1,39 +1,39 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getCategories } from '../../../lib/admin/categories-api';
+import { getTags } from '../../../lib/admin/tags-api';
 import { useToast } from '../../../contexts/toast/ToastContext';
-import { CategoryList } from '../../../components/admin/categories/CategoryList';
-import { CreateCategoryModal } from '../../../components/admin/categories/CreateCategoryModal';
-import { Category } from '../../../lib/admin/categories-api';
+import { TagList } from '../../../components/admin/tags/TagList';
+import { CreateTagModal } from '../../../components/admin/tags/CreateTagModal';
+import { Tag } from '../../../lib/admin/tags-api';
 
-export default function CategoriesPage() {
-  const [categories, setCategories] = useState<Category[]>([]);
+export default function TagsPage() {
+  const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const { addToast } = useToast();
 
   useEffect(() => {
-    loadCategories();
+    loadTags();
   }, []);
 
-  const loadCategories = async () => {
+  const loadTags = async () => {
     try {
       setLoading(true);
-      const data = await getCategories();
-      setCategories(data);
+      const data = await getTags();
+      setTags(data);
     } catch (error) {
-      const message = error instanceof Error ? error.message : 'Failed to load categories';
+      const message = error instanceof Error ? error.message : 'Failed to load tags';
       addToast(message, 'error');
     } finally {
       setLoading(false);
     }
   };
 
-  const handleCategoryCreated = () => {
+  const handleTagCreated = () => {
     setShowCreateModal(false);
-    loadCategories();
-    addToast('Category created successfully', 'success');
+    loadTags();
+    addToast('Tag created successfully', 'success');
   };
 
   if (loading) {
@@ -41,7 +41,7 @@ export default function CategoriesPage() {
       <div className="flex items-center justify-center h-96">
         <div className="text-center">
           <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
-          <p className="mt-2 text-gray-600">Loading categories...</p>
+          <p className="mt-2 text-gray-600">Loading tags...</p>
         </div>
       </div>
     );
@@ -50,22 +50,21 @@ export default function CategoriesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Categories</h1>
+        <h1 className="text-3xl font-bold text-gray-900">Tags</h1>
         <button
           onClick={() => setShowCreateModal(true)}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
         >
-          + New Category
+          + New Tag
         </button>
       </div>
 
-      <CategoryList categories={categories} onRefresh={loadCategories} />
+      <TagList tags={tags} onRefresh={loadTags} />
 
       {showCreateModal && (
-        <CreateCategoryModal
-          categories={categories}
+        <CreateTagModal
           onClose={() => setShowCreateModal(false)}
-          onSuccess={handleCategoryCreated}
+          onSuccess={handleTagCreated}
         />
       )}
     </div>
