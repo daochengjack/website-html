@@ -1,4 +1,11 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-pnpm lint-staged
+# Try corepack pnpm first (available in Node 16.17+), fall back to npx
+if command -v corepack >/dev/null 2>&1; then
+  corepack pnpm lint-staged
+elif command -v pnpm >/dev/null 2>&1; then
+  pnpm lint-staged
+else
+  npx --no-install lint-staged
+fi
